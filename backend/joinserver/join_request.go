@@ -98,10 +98,10 @@ func setJoinContext(ctx *context) error {
 func validateMIC(ctx *context) error {
 	ok, err := ctx.phyPayload.ValidateUplinkJoinMIC(ctx.deviceKeys.NwkKey)
 	if err != nil {
-		return errors.Wrap(err, "validate mic error")
+		return errors.Wrap(errors.WithMessagef(err, "DevEUI: %s", ctx.devEUI), "validate mic error")
 	}
 	if !ok {
-		return ErrInvalidMIC
+		return errors.WithMessagef(ErrInvalidMIC, "DevEUI: %s", ctx.devEUI)
 	}
 	return nil
 }
