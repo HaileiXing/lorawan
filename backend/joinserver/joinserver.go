@@ -213,14 +213,25 @@ func (h *handler) handleJoinReq(w http.ResponseWriter, b []byte) {
 
 	ans := handleJoinRequestWrapper(joinReqPL, dk, asKEKLabel, asKEK, joinReqPL.SenderID, nsKEK)
 
-	h.log.WithFields(log.Fields{
-		"message_type":   ans.BasePayload.MessageType,
-		"sender_id":      ans.BasePayload.SenderID,
-		"receiver_id":    ans.BasePayload.ReceiverID,
-		"transaction_id": ans.BasePayload.TransactionID,
-		"result_code":    ans.Result.ResultCode,
-		"dev_eui":        joinReqPL.DevEUI,
-	}).Info("backend/joinserver: sending response")
+	if ans.Result.ResultCode == backend.Success {
+		h.log.WithFields(log.Fields{
+			"message_type":   ans.BasePayload.MessageType,
+			"sender_id":      ans.BasePayload.SenderID,
+			"receiver_id":    ans.BasePayload.ReceiverID,
+			"transaction_id": ans.BasePayload.TransactionID,
+			"result_code":    ans.Result.ResultCode,
+			"dev_eui":        joinReqPL.DevEUI,
+		}).Info("backend/joinserver: sending response")
+	} else {
+		h.log.WithFields(log.Fields{
+			"message_type":   ans.BasePayload.MessageType,
+			"sender_id":      ans.BasePayload.SenderID,
+			"receiver_id":    ans.BasePayload.ReceiverID,
+			"transaction_id": ans.BasePayload.TransactionID,
+			"result_code":    ans.Result.ResultCode,
+			"dev_eui":        joinReqPL.DevEUI,
+		}).Warn("backend/joinserver: sending response")
+	}
 
 	h.returnPayload(w, http.StatusOK, ans)
 }
