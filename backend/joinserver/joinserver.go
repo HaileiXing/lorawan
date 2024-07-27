@@ -219,6 +219,7 @@ func (h *handler) handleJoinReq(w http.ResponseWriter, b []byte) {
 		"receiver_id":    ans.BasePayload.ReceiverID,
 		"transaction_id": ans.BasePayload.TransactionID,
 		"result_code":    ans.Result.ResultCode,
+		"dev_eui":    joinReqPL.DevEUI,
 	}).Info("backend/joinserver: sending response")
 
 	h.returnPayload(w, http.StatusOK, ans)
