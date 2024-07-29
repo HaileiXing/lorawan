@@ -35,6 +35,7 @@ func handleJoinRequestWrapper(joinReqPL backend.JoinReqPayload, dk DeviceKeys, a
 			resCode = backend.MICFailed
 		default:
 			resCode = backend.Other
+			fmt.Errorf("handleJoinRequestWrapper => handleJoinRequest, dev_eui=%s error : %s", joinReqPL.DevEUI, err)
 		}
 
 		jaPL = backend.JoinAnsPayload{
