@@ -33,6 +33,7 @@ func handleJoinRequestWrapper(joinReqPL backend.JoinReqPayload, dk DeviceKeys, a
 		switch errors.Cause(err) {
 		case ErrInvalidMIC:
 			resCode = backend.MICFailed
+			fmt.Errorf("handleJoinRequestWrapper => handleJoinRequest, dev_eui=%s error : %s", joinReqPL.DevEUI, err)
 		default:
 			resCode = backend.Other
 			fmt.Errorf("handleJoinRequestWrapper => handleJoinRequest, dev_eui=%s error : %s", joinReqPL.DevEUI, err)
@@ -99,12 +100,12 @@ func setJoinContext(ctx *context) error {
 func validateMIC(ctx *context) error {
 	ok, err := ctx.phyPayload.ValidateUplinkJoinMIC(ctx.deviceKeys.NwkKey)
 	if err != nil {
-		//return errors.Wrap(err, "validate mic error")
-		return fmt.Errorf("validate mic error , DevEUI: %s , error=%s", ctx.devEUI, err)
+		return errors.Wrap(err, "validate mic error")
+		//return fmt.Errorf("validate mic error , DevEUI: %s , error=%s", ctx.devEUI, err)
 	}
 	if !ok {
-		//return ErrInvalidMIC
-		return errors.Wrap(errors.New(fmt.Sprintf("DevEUI: %s", ctx.devEUI)), ErrInvalidMIC.Error())
+		return ErrInvalidMIC
+		//return errors.Wrap(errors.New(fmt.Sprintf("DevEUI: %s", ctx.devEUI)), ErrInvalidMIC.Error())
 	}
 	return nil
 }
