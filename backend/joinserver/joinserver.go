@@ -186,9 +186,9 @@ func (h *handler) handleJoinReq(w http.ResponseWriter, b []byte) {
 	if err != nil {
 		switch err {
 		case ErrDevEUINotFound:
-			h.returnJoinReqError(w, joinReqPL.BasePayload, http.StatusBadRequest, backend.UnknownDevEUI, err.Error())
+			h.returnJoinReqError(w, joinReqPL.BasePayload, http.StatusBadRequest, backend.UnknownDevEUI, fmt.Sprintf("%s , dev_eui=%s", err.Error(), joinReqPL.DevEUI))
 		default:
-			h.returnJoinReqError(w, joinReqPL.BasePayload, http.StatusBadRequest, backend.Other, err.Error())
+			h.returnJoinReqError(w, joinReqPL.BasePayload, http.StatusBadRequest, backend.Other, fmt.Sprintf("%s , dev_eui=%s", err.Error(), joinReqPL.DevEUI))
 		}
 		return
 	}

@@ -33,10 +33,8 @@ func handleJoinRequestWrapper(joinReqPL backend.JoinReqPayload, dk DeviceKeys, a
 		switch errors.Cause(err) {
 		case ErrInvalidMIC:
 			resCode = backend.MICFailed
-			fmt.Errorf("handleJoinRequestWrapper => handleJoinRequest, dev_eui=%s error : %s", joinReqPL.DevEUI, err)
 		default:
 			resCode = backend.Other
-			fmt.Errorf("handleJoinRequestWrapper => handleJoinRequest, dev_eui=%s error : %s", joinReqPL.DevEUI, err)
 		}
 
 		jaPL = backend.JoinAnsPayload{
