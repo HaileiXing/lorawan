@@ -41,7 +41,7 @@ func handleJoinRequestWrapper(joinReqPL backend.JoinReqPayload, dk DeviceKeys, a
 			BasePayload: basePayload,
 			Result: backend.Result{
 				ResultCode:  resCode,
-				Description: err.Error(),
+				Description: fmt.Sprintf("%s, dev_eui=%s", err.Error(), joinReqPL.DevEUI),
 			},
 		}
 	}
